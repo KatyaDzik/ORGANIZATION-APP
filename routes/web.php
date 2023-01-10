@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', 'App\Http\Controllers\OrganizationController@getAll');
+Route::get('/org/{id}', 'App\Http\Controllers\OrganizationController@getOrgById')->name('org-data-by-id');
 
 
 Route::get('/adduser', function () {

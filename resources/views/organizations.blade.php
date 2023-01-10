@@ -22,7 +22,7 @@ Organizations
           <td>{{$el->name}}</td>
           <td>{{$el->ogrn}}</td>
           <td>{{$el->oktmo}}</td>
-          <td><a href="#"><button class="btn btn-warning">Детальнее</button></a></td>
+          <td><a href="{{route('org-data-by-id',  $el->id)}}"><button class="btn btn-warning">Детальнее</button></a></td>
         </tr>
       @endforeach
       </tbody>
