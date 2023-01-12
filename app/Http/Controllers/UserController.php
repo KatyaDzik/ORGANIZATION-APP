@@ -34,8 +34,11 @@ class UserController extends Controller
 
     public function getUserById($id) {
         $user = new User();
+        //dd($user->join('organizations', 'users.org_id', '=', 'organizations.id')->where('users.id', '=', $id)->get());
+        return(view('user-profile', ['data'=>$user->join('organizations', 'users.org_id', '=', 'organizations.id')->where('users.id', '=', $id)->first()]));
+       // return view('user-profile', ['data'=>$user->where('id', '=', $id)])->join('organisations', 'org_id', '=', 'id')->get();
         //$users = User::where('org_id', '=', $id)->get();
         //return view('user-profile', ['data'=>Organization::find($id), 'users'=>$user->where('org_id', '=', $id)->get()]);
-        return view('user-profile');
+        //return view('user-profile');
     }
 }

@@ -27,4 +27,6 @@ Route::get('/user/{id}', 'App\Http\Controllers\UserController@getUserById')->nam
      return view('load-xml');
  })->name('loadxml');
 
+Route::post('/loaddata', 'App\Http\Controllers\XMLController@loadData')->name('load-data-from-xml');
+
 

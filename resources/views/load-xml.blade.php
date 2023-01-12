@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container">
-        <form action="{{route('add-user-form')}}" method="post">
+        <form action="{{route('load-data-from-xml')}}" method="post">
             @csrf
             <div class="form-group" style="margin: 50px">
                 <label for="file">Выберете файл для загрузки</label>

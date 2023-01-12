@@ -84,7 +84,7 @@
           <td>{{$el->birthday}}</td>
           <td>{{$el->inn}}</td>
           <td>{{$el->snils}}</td>
-          <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Детальнее</button></a></td>
+            <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Детальнее</button></a></td>
         </tr>
       @endforeach
     @endif
