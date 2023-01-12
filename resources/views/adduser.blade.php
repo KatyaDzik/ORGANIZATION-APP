@@ -11,12 +11,12 @@ Organizations
 
   <div class="form-group">
     <label for="lastName">Фамилия</label>
-    <input type="text" class="form-control" id="lastName" name="lastName"  placeholder="Фамилия">
+    <input type="text" class="form-control" id="lastName" name="lastname"  placeholder="Фамилия">
   </div>
 
   <div class="form-group">
     <label for="firstName">Имя</label>
-    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Имя">
+    <input type="text" class="form-control" id="firstName" name="firstname" placeholder="Имя">
   </div>
 
   <div class="form-group">

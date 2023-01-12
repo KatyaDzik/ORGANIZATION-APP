@@ -16,16 +16,15 @@ use Illuminate\Support\Facades\Route;
 //     return view('organizations');
 // });
 
-Route::get('/', 'App\Http\Controllers\OrganizationController@getAll');
+Route::get('/', 'App\Http\Controllers\OrganizationController@getAll')->name('organizations');
 Route::get('/org/{id}', 'App\Http\Controllers\OrganizationController@getOrgById')->name('org-data-by-id');
-
-
-Route::get('/adduser', function () {
-    return view('/adduser');
-});
+Route::post('/org/{id}/adduser', 'App\Http\Controllers\UserController@CreateUser');
 
 Route::post('/user/submit', 'App\Http\Controllers\UserController@submit')->name('add-user-form');
+Route::get('/user/{id}', 'App\Http\Controllers\UserController@getUserById')->name('user-data-by-id');
 
-
+ Route::get('/loadxml', function () {
+     return view('load-xml');
+ })->name('loadxml');
 
 
