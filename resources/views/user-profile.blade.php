@@ -3,7 +3,6 @@
 @section('doc-title')
     {{$data->last_name}} {{$data->first_name}} {{$data->middle_name}}
 @endsection
-
 <!-- Вывод информации о организации -->
 @section('content')
    <div class="container">
