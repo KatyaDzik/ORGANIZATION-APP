@@ -4,19 +4,85 @@ namespace App\Http\Controllers;
 
 use App\Models\Organization;
 use App\Models\User;
+use App\Rules\INN;
 use App\Rules\OGRN;
+use App\Rules\SNILS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use XMLReader;
 
 class XMLController extends Controller
 {
     public function loadData(Request $req) {
-        //$content = $req->file('file');
         $content = file_get_contents($req->file('file'));
+        //dd($req->file('file')->isValid());
+        libxml_use_internal_errors(true);
         $xmlObject = simplexml_load_string($content);
-//        $json = json_encode($xmlObject);
-//        $phpArray = json_decode($json, true);
+        if ($xmlObject === false) {
+            foreach(libxml_get_errors() as $error) {
+                //dd($error->message);
+                return view('load-xml', ['xml_error'=>$error->message]);
+            }
+        }
 
+
+        //сначала проверка файла
+        foreach ($xmlObject as $org) {
+            //валидация данных организации
+                    $validator = Validator::make(
+                    [
+                        'name' => (string)$org->attributes()['displayName'],
+                        'ogrn' => (string)$org->attributes()['ogrn'],
+                        'oktmo' => (string)$org->attributes()['oktmo']
+                    ],
+                    [
+                        'name' => ['required', 'min:2', 'max:255', 'string', 'unique:organizations,name'],
+                        'ogrn' => ['required', 'string', 'digits:13', new OGRN(), 'unique:organizations,ogrn'],
+                        'oktmo' => ['required', 'string', 'digits:11']
+                    ]
+                );
+
+                if ($validator->fails()) {
+                    $messages = $validator->messages();
+                    $err[] = 'Наименование '.(string)$org->attributes()['displayName'];
+                    $err[] = 'ОГРН '.(string)$org->attributes()['ogrn'];
+                    $err[] = 'ОКТМО '.(string)$org->attributes()['oktmo'];
+                    return view('load-xml', ['mess_error'=>$messages, 'obj_err'=>$err]);
+                }
+
+            foreach ($org as $item) {
+                //валидация данных пользователей
+                $validator_user = Validator::make(
+                    [
+                        'firstname' => (string)$item->attributes()['firstname'],
+                        'middlename' => (string)$item->attributes()['middlename'],
+                        'lastname' => (string)$item->attributes()['lastname'],
+                        'birthday' => (string)$item->attributes()['birthday'],
+                        'inn' => (string)$item->attributes()['inn'],
+                        'snils' => (string)$item->attributes()['snils']
+                    ],
+                    [
+                        'firstname' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
+                        'middlename' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
+                        'lastname' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
+                        'birthday' => ['nullable', 'string', 'date', 'before:today'],
+                        'inn' => ['required', 'string', 'digits:12' , new INN(), 'unique:users,inn'],
+                        'snils' => ['required', 'string', 'digits:11', 'unique:users,snils', new SNILS()]
+                    ]
+                );
+
+                if ($validator_user->fails()) {
+                    $messages = $validator_user->messages();
+                    $err[] = 'ФИО '.(string)$item->attributes()['firstname'].' '.(string)$item->attributes()['middlename'].' '.(string)$item->attributes()['lastname'];
+                    $err[] = 'ИНН '.(string)$item->attributes()['inn'];
+                    $err[] = 'СНИЛС '.(string)$item->attributes()['snils'];
+                    //dd($messages);
+                    return view('load-xml', ['mess_error'=>$messages, 'obj_err'=>$err]);
+                }
+            }
+        }
+
+        //затем если все нормально, то вставка
         foreach ($xmlObject as $org){
             $org1 = new Organization();
             $org1->name = $org->attributes()['displayName'];
@@ -34,34 +100,7 @@ class XMLController extends Controller
                 $user->snils = $item->attributes()['snils'];
                 $user->org_id = $org1->id;
                 $user->save();
-
-
-
-
-//                $validator = Validator::make(
-//                    [
-//                        'name' => $item['@attributes']['displayName'],
-//                        'ogrn' => $item['@attributes']['ogrn'],
-//                        'oktmo' => $item['@attributes']['oktmo']
-//                    ],
-//                    [
-//                        'name' => ['required', 'min:2', 'max:255', 'string', 'unique:organizations,name'],
-//                        'ogrn' => ['required', 'string', 'digits:13', new OGRN(), 'unique:organizations,ogrn'],
-//                        'oktmo' => ['required', 'string', 'digits:11']
-//                    ]
-//                );
-//
-//                if ($validator->fails())
-//                {
-//                    $messages = $validator->messages();
-//                    dd($messages);
-
-                    //return redirect()->back()->withErrors($v->errors());
-                    //return view('load-xml', ['errs'=>Organization::find($id), 'users'=>$user->where('', '=', $id)->get()]);
-
                 }
-
-            }
-        return redirect()->route('organizations');
         }
-}
+        return view('load-xml', ['success_msg'=>'Данные были успешно загружены']);
+}}

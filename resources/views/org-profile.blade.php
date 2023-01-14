@@ -16,8 +16,8 @@
         @if($errors->any())
             <div class="alert alert-danger">
             <ul>
-                @foreach($errors->all() as $message)
-                    <li> {{$message}}</li>
+                @foreach($obj_err->all() as $item)
+                    <li> {{$item}}</li>
                 @endforeach
             </ul>
             </div>
@@ -27,32 +27,32 @@
         @csrf
         <div class="form-group">
           <label for="lastname">Фамилия</label>
-          <input type="text" class="form-control" id="lastname" name="lastname"  placeholder="Фамилия">
+          <input type="text" class="form-control" value="{{ old('lastname') }}" id="lastname" name="lastname"  placeholder="Фамилия">
         </div>
 
         <div class="form-group">
           <label for="firstname">Имя</label>
-          <input type="text" class="form-control" id="first_name" name="firstname" placeholder="Имя">
+          <input type="text" class="form-control" value="{{ old('firstname') }}" id="first_name" name="firstname" placeholder="Имя">
         </div>
 
         <div class="form-group">
           <label for="middlename">Отчество</label>
-          <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Отчество">
+          <input type="text" class="form-control" id="middlename" name="middlename" value="{{ old('middlename') }}" placeholder="Отчество">
         </div>
 
         <div class="form-group">
           <label for="birthday">Дата Рождения</label>
-          <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Дата рождения">
+          <input type="date" class="form-control" id="birthday" name="birthday" value="{{ old('birthday') }}" placeholder="Дата рождения">
         </div>
 
         <div class="form-group">
           <label for="inn">ИНН</label>
-          <input type="number" class="form-control" id="inn" name="inn" placeholder="ИНН">
+          <input type="number" class="form-control" id="inn" name="inn" value="{{ old('inn') }}" placeholder="ИНН">
         </div>
 
         <div class="form-group">
           <label for="snils">СНИЛС</label>
-          <input type="number" class="form-control" id="snils" name="snils" placeholder="СНИЛС">
+          <input type="number" class="form-control" id="snils" name="snils" value="{{ old('snils') }}" placeholder="СНИЛС">
         </div>
 
         <div class="modal-footer">

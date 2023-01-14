@@ -9,17 +9,7 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function CreateUser(UserPostRequest $req, $id){
-
-//        $validated = validator($req->all(), [
-//            'firstname' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
-//            'middlename' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
-//            'lastname' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
-//
-//
-//        ])->validate();
         $validated = $req->validated();
-        //dd($validated);
-        //return redirect()->route()->withInput();
         $user = new User();
         $user->first_name = $req->input('firstname');
         $user->middle_name = $req->input('middlename');
@@ -34,11 +24,6 @@ class UserController extends Controller
 
     public function getUserById($id) {
         $user = new User();
-        //dd($user->join('organizations', 'users.org_id', '=', 'organizations.id')->where('users.id', '=', $id)->get());
         return(view('user-profile', ['data'=>$user->join('organizations', 'users.org_id', '=', 'organizations.id')->where('users.id', '=', $id)->first()]));
-       // return view('user-profile', ['data'=>$user->where('id', '=', $id)])->join('organisations', 'org_id', '=', 'id')->get();
-        //$users = User::where('org_id', '=', $id)->get();
-        //return view('user-profile', ['data'=>Organization::find($id), 'users'=>$user->where('org_id', '=', $id)->get()]);
-        //return view('user-profile');
     }
 }

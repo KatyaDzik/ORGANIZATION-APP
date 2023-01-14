@@ -4,6 +4,7 @@
 Organizations
 @endsection
 
+<!-- Вывод информации о организации -->
 @section('content')
 <div class="container">
 <h1>Организации</h1>

@@ -26,15 +26,14 @@ class OGRN implements Rule
      */
     public function passes($attribute, $value)
     {
-        $response = file_get_contents('https://htmlweb.ru/json/validator/ogrn/'.$value);
-        $phpArray = json_decode($response, true);
-        if ($phpArray['status']==200) {
-            return true;
+        $ogrn = (string)$value;
+        if (preg_match('#([\d]{13})#', $ogrn, $m)) {
+            $code1 = substr($m[1], 0, 12);
+            $code2 = floor($code1 / 11) * 11;
+            $code = ($code1 - $code2) % 10;
+            if ($code == $m[1][12]) return true;
         }
-        else{
-            $this->err = $phpArray['error'];
-            return false;
-        }
+        return false;
     }
 
     /**
@@ -44,6 +43,6 @@ class OGRN implements Rule
      */
     public function message()
     {
-        return $this->err;
+        return 'Неправильное контрольное число ОГРН';
     }
 }
