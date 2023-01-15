@@ -28,7 +28,7 @@ class SNILS implements Rule
         $result = false;
         $snils = (string) $value;
         $sum = 0;
-        if(strlen($snils)==12) {
+        if(strlen($snils)==11) {
         for ($i = 0; $i < 9; $i++) {
             $sum += (int) $snils[$i]* (9 - $i);
         }

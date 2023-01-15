@@ -15,7 +15,10 @@ class XMLController extends Controller
 {
     public function loadData(Request $req) {
         $content = file_get_contents($req->file('file'));
-        //dd($req->file('file')->isValid());
+        if(trim($content)==""){
+            return view('load-xml', ['xml_error'=>'пустой документ']);
+        }
+
         libxml_use_internal_errors(true);
         $xmlObject = simplexml_load_string($content);
         if ($xmlObject === false) {
