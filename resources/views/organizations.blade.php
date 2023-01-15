@@ -18,15 +18,19 @@ Organizations
             </tr>
           </thead>
           <tbody>
-      @foreach($data as $el)
+          @if(count($orgs)>0)
+      @foreach($orgs as $el)
         <tr>
           <td>{{$el->name}}</td>
           <td>{{$el->ogrn}}</td>
           <td>{{$el->oktmo}}</td>
-          <td><a href="{{route('org-data-by-id',  $el->id)}}"><button class="btn btn-warning">Детальнее</button></a></td>
+          <td><a href="{{route('org-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
         </tr>
       @endforeach
+
       </tbody>
       </table>
+    <div>{{$orgs->links()}}</div>
+    @endif
     </div>
 @endsection

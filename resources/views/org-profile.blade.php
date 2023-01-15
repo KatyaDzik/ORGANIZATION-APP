@@ -10,18 +10,23 @@
     <h1>{{$data->name}}</h1>
     <h4>ОГРН: {{$data->ogrn}}</h4>
     <h4>ОКТМО: {{$data->oktmo}}</h4>
+
+
 <!-- модальное окно с формой добавления -->
-{{--    <button class="btn btn-success">Добавить</button>--}}
-    <div id="myModal" class="mymodal">
         @if($errors->any())
             <div class="alert alert-danger">
-            <ul>
-                @foreach($obj_err->all() as $item)
-                    <li> {{$item}}</li>
-                @endforeach
-            </ul>
+                <ul>
+                    @foreach($errors->all() as $message)
+                        <li> {{$message}}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
+
+
+        <button id="btnOpenModal" class="btn btn-success">Добавить</button>
+
+    <div id="myModal" class="mymodal">
 
       <form style="margin: 20px;" action="/org/{{$data->id}}/adduser" method="post">
         @csrf
@@ -56,7 +61,7 @@
         </div>
 
         <div class="modal-footer">
-              <button type="button" class="btn btn-secondary">Закрыть</button>
+              <button type="button" id="btnCloseModal" class="btn btn-secondary">Закрыть</button>
               <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
       </form>
@@ -64,8 +69,10 @@
 
 
 
-   <!-- вывод пользователей, которые есть в организации-->
 
+
+   <!-- вывод пользователей, которые есть в организации-->
+        @if (!empty($users))
     <h2 style="margin-top: 100px">Пользователи</h2>
     <table class="table table-striped table-sm">
           <thead>
@@ -77,14 +84,13 @@
             </tr>
           </thead>
           <tbody>
-    @if (count($users) > 0)
       @foreach($users as $el)
         <tr>
           <td>{{$el->last_name}} {{$el->first_name}} {{$el->middle_name}} </td>
           <td>{{$el->birthday}}</td>
           <td>{{$el->inn}}</td>
           <td>{{$el->snils}}</td>
-            <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Детальнее</button></a></td>
+            <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
         </tr>
       @endforeach
     @endif

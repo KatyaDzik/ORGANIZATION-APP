@@ -39,7 +39,12 @@ nav {
     display: flex !important;
     align-items: center !important;
 }
-/*.mymodal {*/
-/*    display: none;*/
-/*    position: fixed;*/
-/*}*/
+
+
+.mymodal {
+    display: none;
+    width: 100%;
+    overflow: auto;
+    border: 1px solid #555;
+    border-radius: 10px;
+}

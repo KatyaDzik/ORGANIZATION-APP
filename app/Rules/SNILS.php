@@ -28,6 +28,7 @@ class SNILS implements Rule
         $result = false;
         $snils = (string) $value;
         $sum = 0;
+        if(strlen($snils)==12) {
         for ($i = 0; $i < 9; $i++) {
             $sum += (int) $snils[$i]* (9 - $i);
         }
@@ -41,7 +42,7 @@ class SNILS implements Rule
             }
         }
         if ($check_digit === (int) substr($snils, -2)) {
-            $result = true;}
+            $result = true;}}
         return $result;
     }
     /**
