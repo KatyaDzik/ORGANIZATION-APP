@@ -92,7 +92,6 @@ class XMLController extends Controller
             $org1->ogrn = $org->attributes()['ogrn'];
             $org1->oktmo = $org->attributes()['oktmo'];
             $org1->save();
-            //echo $org->attributes()['displayName'];
             foreach ($org as $item) {
                 $user = new User();
                 $user->first_name = $item->attributes()['firstname'];
