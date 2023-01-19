@@ -7,20 +7,20 @@
 @section('content')
     <div class="container">
 {{--  Вывод ошибок  --}}
-        @if(isset($xml_error))
+        @if(isset($file_error))
             <br>
             <div class="alert alert-danger">
                 <h4>Файл XML не валидный</h4>
-                <h5>{{$xml_error}}</h5>
+                <h5>{{$file_error}}</h5>
             </div>
         @endif
 
-    @if(isset($mess_error))
+    @if(isset($msg_errors))
         <br>
         <div class="alert alert-danger">
             <ul>
                 <h4>Допущены ошибки</h4>
-                @foreach($mess_error->all() as $mes)
+                @foreach($msg_errors->all() as $mes)
                     <li> {{$mes}}</li>
                 @endforeach
             </ul>
