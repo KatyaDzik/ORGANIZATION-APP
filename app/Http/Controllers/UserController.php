@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
+use App\Models\OrganizationUser;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\PostService;
@@ -18,21 +19,20 @@ class UserController extends Controller
         $user->birthday = $req->input('birthday');
         $user->snils = $req->input('snils');
         $user->inn = $req->input('inn');
-        $user->org_id=$id;
         $service = new PostService();
         $rsp=$service->CreateUser($user);
         if($rsp[0]=='success'){
             $user->save();
+            $org_user = new OrganizationUser();
+            $org_user->org_id = $id;
+            $org_user->user_id= $user->id;
+            $org_user->save();
         }
-//        if($service->CreateUser($user)==['success']);
-//        {
-//
-//        }
         return redirect()->route('org-data-by-id',  $id);
     }
 
     public function getUserById($id) {
-        $user = new User();
-        return(view('user-profile', ['data'=>$user->join('organizations', 'users.org_id', '=', 'organizations.id')->where('users.id', '=', $id)->first()]));
+        $user = User::find($id);
+        return view('user-profile', ['user'=>$user, 'organizations'=>$user->organizations]);
     }
 }

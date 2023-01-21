@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Importer\Files\FileInterface;
 use App\Importer\Files\XmlFile;
+use App\Models\OrganizationUser;
 use Illuminate\Support\Facades\Log;
 
 class FileService
@@ -60,9 +61,12 @@ class FileService
             $errs = [];
             try {
                 $org->save();
-                foreach ($org->users as $user) {
-                    $user->org_id = $org->id;
+                foreach ($org->user_list as $user) {
                     $user->save();
+                    $orgs_user = new OrganizationUser();
+                    $orgs_user->user_id = $user->id;
+                    $orgs_user->org_id = $org->id;
+                    $orgs_user->save();
                 }
             } catch (\Exception $exception) {
                 $errs[] = [$org];

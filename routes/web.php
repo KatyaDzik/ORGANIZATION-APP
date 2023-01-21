@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'App\Http\Controllers\OrganizationController@getAll')->name('organizations');
 Route::get('/org/{id}', 'App\Http\Controllers\OrganizationController@getOrgById')->name('org-data-by-id');
 Route::post('/org/{id}/adduser', 'App\Http\Controllers\UserController@CreateUser');
+Route::post('/org/{id}/edit', 'App\Http\Controllers\OrganizationController@editOrg')->name('edit-org-data');
+
 
 Route::post('/user/submit', 'App\Http\Controllers\UserController@submit')->name('add-user-form');
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@getUserById')->name('user-data-by-id');

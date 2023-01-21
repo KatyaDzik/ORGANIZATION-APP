@@ -50,6 +50,8 @@ class XmlFile implements FileInterface
                 break;
             }
             foreach ($org as $item) {
+//                var_dump($item->attributes());
+//                echo "<br/>";
                 $user = new User();
                 $user->first_name = $item->attributes()['firstname'];
                 $user->middle_name = $item->attributes()['middlename'];
@@ -57,21 +59,18 @@ class XmlFile implements FileInterface
                 $user->birthday = $item->attributes()['birthday'];
                 $user->inn = $item->attributes()['inn'];
                 $user->snils = $item->attributes()['snils'];
-                array_push($organization->users, $user);
+                array_push($organization->user_list, $user);
                 $rsp = $service->createUser($user);
                 if(isset($rsp['msg_errors'])){
                     break;
                 }
             }
+           // echo "<br/><br/>";
         }
-
         if(isset($rsp['msg_errors'])){
             return $rsp;
         }
 
         return $data;
     }
-
-
-
 }
