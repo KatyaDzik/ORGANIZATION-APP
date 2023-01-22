@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrganizationUser;
 use App\Services\UpdateService;
 use Illuminate\Http\Request;
 use App\Models\Organization;
@@ -25,7 +26,8 @@ class OrganizationController extends Controller
         return view('org-profile', ['data'=>$org, 'users'=>$org->users]);
     }
 
-    public function editOrg(Request $req, $id){
+    public function editOrg(Request $req, $id)
+    {
         $org= Organization::find($id);
         $org->name = $req->input('name');
         $org->ogrn = $req->input('ogrn');
@@ -38,6 +40,21 @@ class OrganizationController extends Controller
             $rsp=$service->updateOrg($org);
             echo json_encode($rsp);
         }
-
     }
+
+    public function deleteOrgById($id)
+    {
+        $org = Organization::find($id);
+        $org->delete();
+        return redirect()->route('organizations');
+    }
+
+    public function deleteUserFromOrg($org_id, $user_id)
+    {
+        $org_user = OrganizationUser::where([['org_id', '=', $org_id],['user_id', '=', $user_id]])->delete();
+        if($org_user = 1){
+            echo json_encode('success');
+        }
+    }
+
 }

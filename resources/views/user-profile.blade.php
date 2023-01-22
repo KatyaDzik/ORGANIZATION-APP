@@ -32,7 +32,6 @@
                            <td><a href="{{route('org-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
                        </tr>
                    @endforeach
-
                </tbody>
            </table>
        @endif

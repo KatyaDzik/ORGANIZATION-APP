@@ -10,6 +10,7 @@
         <div style="display: flex; padding: 20px 20px 20px 0;">
             <h1 style="margin: 0; margin-right: 20px;">{{$data->name}}</h1>
             <button class="pen" id="btnOpenUpdateModalOrg"><img width="20px" src="{{ URL::asset('img/pen.png') }}" alt=""></button>
+            <button class="pen" style="margin-left: 20px" onclick="{{route('delete-org-by-id',  $data->id)}}" id="btnDeleteOrg"><a href="{{route('delete-org-by-id',  $data->id)}}"><img width="20px" src="{{ URL::asset('img/trash.png') }}" alt=""></a></button>
         </div>
     <h4>ОГРН: {{$data->ogrn}}</h4>
     <h4>ОКТМО: {{$data->oktmo}}</h4>
@@ -122,7 +123,7 @@
           <td>{{$el->inn}}</td>
           <td>{{$el->snils}}</td>
             <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
-        </tr>
+            <td><a><button id="deleteUserfromOrg" value="{{$el->id}}" class="btn btn-danger">Удалить</button></a></td>        </tr>
       @endforeach
     @endif
       </tbody>
@@ -142,7 +143,7 @@
             let oktmo = $('#oktmo').val();
 
             $.ajax({
-                url: "/org/"+edit_id+"/edit",
+                //url: "/org/"+edit_id+"/edit",
                 url:"{{route('edit-org-data',  $data->id)}}",
                 type:"POST",
                 data:{
@@ -170,11 +171,33 @@
                     }
                 },
                 error: function(response) {
+                    alert(response);
+                },
+            });
+        });
+    </script>
 
-                    // $('#nameErrorMsg').text(response.responseJSON.errors.name);
-                    // $('#emailErrorMsg').text(response.responseJSON.errors.email);
-                    // $('#mobileErrorMsg').text(response.responseJSON.errors.mobile);
-                    // $('#messageErrorMsg').text(response.responseJSON.errors.message);
+    <script type="text/javascript">
+        $('#deleteUserfromOrg').on('click',function(e){
+            e.preventDefault();
+            console.log('meow');
+             let user_id = $('#deleteUserfromOrg').val();
+            // let org_id = $('#updateOrg').val();
+            $.ajax({
+                {{--url: "{{route('delete-user-from-org', ['org_id'=>$data->id, 'user_id' => $el->id ])}}",--}}
+                url: '/org/'+{{$data->id}}+'/delete/user/'+user_id,
+                type:"DELETE",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(response){
+                    if(response = "success"){
+                        location.reload();
+                    }
+                },
+                error: function(response) {
+                    alert("hi"+response);
+                    console.log(response);
                 },
             });
         });

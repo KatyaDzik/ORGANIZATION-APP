@@ -25,6 +25,7 @@ Organizations
           <td>{{$el->ogrn}}</td>
           <td>{{$el->oktmo}}</td>
           <td><a href="{{route('org-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
+          <td><a href="{{route('delete-org-by-id',  $el->id)}}"><button class="btn btn-danger">Удалить</button></a></td>
         </tr>
       @endforeach
 
