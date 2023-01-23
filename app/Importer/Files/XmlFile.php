@@ -44,14 +44,12 @@ class XmlFile implements FileInterface
             $organization->name = $org->attributes()['displayName'];
             $organization->ogrn = $org->attributes()['ogrn'];
             $organization->oktmo = $org->attributes()['oktmo'];
-            $rsp = $service->createOrg($organization);
+            $rsp = $service->validateOrg($organization);
             $data[] =$organization;
             if(isset($rsp['msg_errors'])){
                 break;
             }
             foreach ($org as $item) {
-//                var_dump($item->attributes());
-//                echo "<br/>";
                 $user = new User();
                 $user->first_name = $item->attributes()['firstname'];
                 $user->middle_name = $item->attributes()['middlename'];
@@ -60,12 +58,11 @@ class XmlFile implements FileInterface
                 $user->inn = $item->attributes()['inn'];
                 $user->snils = $item->attributes()['snils'];
                 array_push($organization->user_list, $user);
-                $rsp = $service->createUser($user);
+                $rsp = $service->validateUser($user);
                 if(isset($rsp['msg_errors'])){
                     break;
                 }
             }
-           // echo "<br/><br/>";
         }
         if(isset($rsp['msg_errors'])){
             return $rsp;

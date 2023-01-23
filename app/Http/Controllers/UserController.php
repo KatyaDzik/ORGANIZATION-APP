@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
 use App\Models\OrganizationUser;
+use App\Services\PutService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\PostService;
+
 
 class UserController extends Controller
 {
@@ -20,7 +22,7 @@ class UserController extends Controller
         $user->snils = $req->input('snils');
         $user->inn = $req->input('inn');
         $service = new PostService();
-        $rsp=$service->CreateUser($user);
+        $rsp=$service->validateUser($user);
         if($rsp[0]=='success'){
             $user->save();
             $org_user = new OrganizationUser();
@@ -31,8 +33,36 @@ class UserController extends Controller
         return redirect()->route('org-data-by-id',  $id);
     }
 
+    public function editUser(Request $req, $id)
+    {
+        $user= User::find($id);
+        $user->first_name = $req->input('first_name');
+        $user->last_name = $req->input('last_name');
+        $user->middle_name = $req->input('middle_name');
+        $user->birthday = $req->input('birthday');
+        $user->inn = $req->input('inn');
+        $user->snils = $req->input('snils');
+        $service = new PutService();
+        $rsp = $service->validateUser($user);
+        if(isset($rsp['msg_errors'])) {
+            echo json_encode($rsp);
+        } else {
+            $rsp=$service->updateUser($user);
+            echo json_encode($rsp);
+        }
+    }
+
+
     public function getUserById($id) {
         $user = User::find($id);
         return view('user-profile', ['user'=>$user, 'organizations'=>$user->organizations]);
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::where('id', '=', $id)->delete();
+        if($user = 1){
+            echo json_encode('success');
+        }
     }
 }

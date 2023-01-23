@@ -12,7 +12,9 @@ class FileService
     public $file;
     public function loadData($content, $extension){
         //определение формата
-        $format=$this->extensionDefinition($content,$extension);
+        $format=$this->extensionDefinition($content, $extension);
+
+
         if(isset($format['file_error'])) {
             return $format['file_error'];
         }

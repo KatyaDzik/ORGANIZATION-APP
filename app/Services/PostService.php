@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;use function Symfony\Component\String\u
 
 class PostService
 {
-    public function CreateUser(User $user)
+    public function validateUser(User $user)
     {
         $req = new UserPostRequest();
         $validator = Validator::make(
@@ -32,11 +32,10 @@ class PostService
             $err[] = 'СНИЛС ' . (string)$user->snils;
             return ['msg_errors' => $messages, 'obj_err' => $err];
         }
-        //$user->save();
         return ['success'];
     }
 
-    public function createOrg(Organization $organization){
+    public function validateOrg(Organization $organization){
         $req = new OrgPostRequest();
         $validator = Validator::make(
             [
@@ -55,6 +54,12 @@ class PostService
             return ['msg_errors'=>$messages, 'obj_err'=>$err];
         }
         return ['success'];
+    }
+
+    public function createOrg(Organization $organization)
+    {
+        $saved=$organization->save();
+        return ['Успешно обновлено'];
     }
 }
 

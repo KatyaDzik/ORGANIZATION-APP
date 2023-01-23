@@ -6,7 +6,7 @@
   !*** ./resources/js/app.js ***!
   \*****************************/
 /***/ (() => {
-
+// логика модального окна для формы обновления организации
 var modal_update_org = document.getElementById('formOrgUpdateModal');
 var btn_open_update_org = document.getElementById('btnOpenUpdateModalOrg');
 var btn_close_update_org = document.getElementById('btnCloseUpdateModalOrg');
@@ -22,6 +22,7 @@ window.onclick = function (event) {
   }
 };
 
+// логика модального окна для формы добавления пользователя
             var modal = document.getElementById('myModal');
             var btnOpen = document.getElementById('btnOpenModal');
             var btnClose = document.getElementById('btnCloseModal');
@@ -37,6 +38,10 @@ window.onclick = function (event) {
                 }
             };
 /***/ }),
+
+
+
+
 
 /***/ "./resources/css/app.css":
 /*!*******************************!*\

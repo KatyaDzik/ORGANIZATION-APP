@@ -17,24 +17,23 @@
 
         <!-- Форма для изменения данных об организации -->
         <div id="formOrgUpdateModal" class="mymodal">
-
             <form style="margin: 20px;"  class="form_modal" action="/org/{{$data->id}}/edit" method="post">
                 {{--     Блок для вывода ошибок       --}}
                 <div style="display: none" id="updateOrgError" class="alert alert-danger"></div>
                 {{--         Форма       --}}
                 @csrf
                 <div class="form-group">
-                    <label for="name">Название</label>
+                    <label for="name">Название</label><span class="required-field"> *</span>
                     <input type="text" class="form-control" value="{{ $data->name }}" id="name" name="name" >
                 </div>
 
                 <div class="form-group">
-                    <label for="ogrn">ОГРН</label>
+                    <label for="ogrn">ОГРН</label><span class="required-field"> *</span>
                     <input type="text" class="form-control" value="{{ $data->ogrn }}" id="ogrn" name="ogrn">
                 </div>
 
                 <div class="form-group">
-                    <label for="oktmo">ОКТМО</label>
+                    <label for="oktmo">ОКТМО</label><span class="required-field"> *</span>
                     <input type="text" class="form-control" id="oktmo" name="oktmo" value="{{ $data->oktmo }}">
                 </div>
 
@@ -65,21 +64,20 @@
 
 
             <div id="myModal" class="mymodal">
-
                 <form style="margin: 20px;"  class="form_modal" action="/org/{{$data->id}}/adduser" method="post">
                     @csrf
                     <div class="form-group">
-                        <label for="lastname">Фамилия</label>
+                        <label for="lastname">Фамилия</label><span class="required-field"> *</span>
                         <input type="text" class="form-control" value="{{ old('lastname') }}" id="lastname" name="lastname"  placeholder="Фамилия">
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname">Имя</label>
+                        <label for="firstname">Имя</label><span class="required-field"> *</span>
                         <input type="text" class="form-control" value="{{ old('firstname') }}" id="first_name" name="firstname" placeholder="Имя">
                     </div>
 
                     <div class="form-group">
-                        <label for="middlename">Отчество</label>
+                        <label for="middlename">Отчество</label><span class="required-field"> *</span>
                         <input type="text" class="form-control" id="middlename" name="middlename" value="{{ old('middlename') }}" placeholder="Отчество">
                     </div>
 
@@ -89,12 +87,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inn">ИНН</label>
+                        <label for="inn">ИНН</label><span class="required-field"> *</span>
                         <input type="number" class="form-control" id="inn" name="inn" value="{{ old('inn') }}" placeholder="ИНН">
                     </div>
 
                     <div class="form-group">
-                        <label for="snils">СНИЛС</label>
+                        <label for="snils">СНИЛС</label><span class="required-field"> *</span>
                         <input type="number" class="form-control" id="snils" name="snils" value="{{ old('snils') }}" placeholder="СНИЛС">
                     </div>
 
@@ -145,7 +143,7 @@
             $.ajax({
                 //url: "/org/"+edit_id+"/edit",
                 url:"{{route('edit-org-data',  $data->id)}}",
-                type:"POST",
+                type:"PUT",
                 data:{
                     "_token": "{{ csrf_token() }}",
                     name:name,
@@ -182,9 +180,7 @@
             e.preventDefault();
             console.log('meow');
              let user_id = $('#deleteUserfromOrg').val();
-            // let org_id = $('#updateOrg').val();
             $.ajax({
-                {{--url: "{{route('delete-user-from-org', ['org_id'=>$data->id, 'user_id' => $el->id ])}}",--}}
                 url: '/org/'+{{$data->id}}+'/delete/user/'+user_id,
                 type:"DELETE",
                 data:{

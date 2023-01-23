@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrganizationUser;
-use App\Services\UpdateService;
+use App\Services\PutService;
 use Illuminate\Http\Request;
 use App\Models\Organization;
 use App\Services\PostService;
-use App\Http\Requests\OrgPutRequest;
 class OrganizationController extends Controller
 {
     public function getAll(Request $req)
@@ -26,13 +25,30 @@ class OrganizationController extends Controller
         return view('org-profile', ['data'=>$org, 'users'=>$org->users]);
     }
 
+    public function createOrg(Request $req)
+    {
+        $org= new Organization();
+        $org->name = $req->input('name');
+        $org->ogrn = $req->input('ogrn');
+        $org->oktmo = $req->input('oktmo');
+        $service = new PostService();
+//        echo json_encode($org);
+        $rsp = $service->validateOrg($org);
+        if(isset($rsp['msg_errors'])) {
+            echo json_encode($rsp);
+        } else {
+            $rsp=$service->createOrg($org);
+            echo json_encode($rsp);
+        }
+    }
+
     public function editOrg(Request $req, $id)
     {
         $org= Organization::find($id);
         $org->name = $req->input('name');
         $org->ogrn = $req->input('ogrn');
         $org->oktmo = $req->input('oktmo');
-        $service = new UpdateService();
+        $service = new PutService();
         $rsp = $service->validateOrg($org);
         if(isset($rsp['msg_errors'])) {
             echo json_encode($rsp);
@@ -56,5 +72,6 @@ class OrganizationController extends Controller
             echo json_encode('success');
         }
     }
+
 
 }

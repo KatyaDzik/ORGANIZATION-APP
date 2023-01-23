@@ -79,3 +79,6 @@ nav {
     border-radius: 5px;
 }
 
+.required-field {
+    color: red;
+}
