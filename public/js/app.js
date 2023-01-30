@@ -6,21 +6,26 @@
   !*** ./resources/js/app.js ***!
   \*****************************/
 /***/ (() => {
-// логика модального окна для формы обновления организации
-var modal_update_org = document.getElementById('formOrgUpdateModal');
-var btn_open_update_org = document.getElementById('btnOpenUpdateModalOrg');
-var btn_close_update_org = document.getElementById('btnCloseUpdateModalOrg');
-btn_open_update_org.onclick = function () {
-    modal_update_org.style.display = "block";
-};
-btn_close_update_org.onclick = function () {
-    modal_update_org.style.display = "none";
-};
-window.onclick = function (event) {
-  if (event.target == modal) {
-      modal_update_org.style.display = "none";
-  }
-};
+            //let modals = document.querySelectorAll('.mymodal');
+            document.querySelectorAll('.btn-open-modal').forEach(w => {
+                w.addEventListener('click', _=> {
+                    console.log(w.value);
+                    // document.querySelectorAll('.mymodal').forEach(e => {
+                    //    // e.classList.toggle('qwe');
+                    //     e.style.display = "block";
+                    // })
+                    document.getElementById(w.value).style.display = "block";
+                })
+            })
+
+            document.querySelectorAll('.btn-close-modal').forEach(w => {
+                w.addEventListener('click', _=> {
+                    document.querySelectorAll('.mymodal').forEach(e => {
+                        // e.classList.toggle('qwe');
+                        e.style.display = "none";
+                    })
+                })
+            })
 
 // логика модального окна для формы добавления пользователя
             var modal = document.getElementById('myModal');

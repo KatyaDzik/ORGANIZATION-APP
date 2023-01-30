@@ -23,13 +23,15 @@ Route::delete('/org/{org_id}/delete/user/{user_id}', 'App\Http\Controllers\Organ
 //CRUD для организации
 Route::get('/org/{id}', 'App\Http\Controllers\OrganizationController@getOrgById')->name('org-data-by-id');
 Route::post('/create', 'App\Http\Controllers\OrganizationController@createOrg')->name('create-org');
-Route::put('/org/{id}/edit', 'App\Http\Controllers\OrganizationController@editOrg')->name('edit-org-data');
-Route::get('/org/{id}/delete', 'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
+Route::put('/org/edit/{id}', 'App\Http\Controllers\OrganizationController@editOrg')->name('edit-org-data');
+Route::delete('/org/delete/{id}', 'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
+
+//Route::get('/org/{id}/delete', 'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
 
 //CRUD для пользователя
 Route::get('/user/{id}', 'App\Http\Controllers\UserController@getUserById')->name('user-data-by-id');
 //Создание пользователя, с привязкой к организации
-Route::post('/org/{id}/adduser', 'App\Http\Controllers\UserController@CreateUser');
+Route::post('/org/{id}/create', 'App\Http\Controllers\UserController@CreateUser')->name('create-user');
 Route::put('/user/edit/{id}', 'App\Http\Controllers\UserController@editUser')->name('update-user');
 Route::delete('/user/delete/{id}', 'App\Http\Controllers\UserController@deleteUser')->name('delete-user');
 

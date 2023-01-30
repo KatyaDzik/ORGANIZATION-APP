@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('middle_name')->nullable(false);
             $table->string('last_name')->nullable(false);
             $table->date('birthday')->nullable(true);
-            $table->string('inn')->nullable(false);
-            $table->string('snils')->nullable(false);
-//            $table->bigInteger('org_id')->unsigned();
-//            $table->foreign('org_id')->references('id')->on('organizations');
+            $table->string('inn')->nullable(false)->unique();
+            $table->string('snils')->nullable(false)->unique();
+            $table->string('hash');
             $table->timestamps();
         });
     }

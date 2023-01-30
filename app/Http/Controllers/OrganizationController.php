@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrganizationUser;
-use App\Services\PutService;
+use App\Services\OrganizationService;
 use Illuminate\Http\Request;
 use App\Models\Organization;
-use App\Services\PostService;
 class OrganizationController extends Controller
 {
     public function getAll(Request $req)
@@ -31,15 +30,9 @@ class OrganizationController extends Controller
         $org->name = $req->input('name');
         $org->ogrn = $req->input('ogrn');
         $org->oktmo = $req->input('oktmo');
-        $service = new PostService();
-//        echo json_encode($org);
-        $rsp = $service->validateOrg($org);
-        if(isset($rsp['msg_errors'])) {
-            echo json_encode($rsp);
-        } else {
-            $rsp=$service->createOrg($org);
-            echo json_encode($rsp);
-        }
+        $service = new OrganizationService();
+        $rsp = $service->createOrg($org);
+        return json_encode($rsp);
     }
 
     public function editOrg(Request $req, $id)
@@ -48,21 +41,17 @@ class OrganizationController extends Controller
         $org->name = $req->input('name');
         $org->ogrn = $req->input('ogrn');
         $org->oktmo = $req->input('oktmo');
-        $service = new PutService();
-        $rsp = $service->validateOrg($org);
-        if(isset($rsp['msg_errors'])) {
-            echo json_encode($rsp);
-        } else {
-            $rsp=$service->updateOrg($org);
-            echo json_encode($rsp);
-        }
+        $service = new OrganizationService();
+        $rsp = $service->updateOrg($org);
+        return json_encode($rsp);
     }
 
     public function deleteOrgById($id)
     {
-        $org = Organization::find($id);
-        $org->delete();
-        return redirect()->route('organizations');
+        $isDeleteOrg = Organization::where('id', '=', $id)->delete();
+        if($isDeleteOrg = 1){
+            echo json_encode('success');
+        }
     }
 
     public function deleteUserFromOrg($org_id, $user_id)

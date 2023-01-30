@@ -31,8 +31,8 @@ class UserPostRequest extends FormRequest
             'middlename' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
             'lastname' => ['required', 'string', 'min:2', 'max:255', 'alpha'],
             'birthday' => ['nullable', 'string', 'date', 'before:today',],
-            'inn' => ['required', 'string', 'digits:12' , new INN(), 'unique:users,inn'],
-            'snils' => ['required', 'string', 'digits:11', 'unique:users,snils', new SNILS()]
+            'inn' => ['required', 'string', 'digits:12' , new INN()],
+            'snils' => ['required', 'string', 'digits:11', new SNILS()]
         ];
     }
 }

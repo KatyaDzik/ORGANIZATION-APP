@@ -4,8 +4,8 @@ namespace App\Importer\Files;
 
 use App\Models\Organization;
 use App\Models\User;
-use App\Services\PostService;
-
+use App\Importer\Validation\UserValidation;
+use App\Importer\Validation\OrganizationValidation;
 class XmlFile implements FileInterface
 {
     private $content;
@@ -39,12 +39,12 @@ class XmlFile implements FileInterface
         $data = [];
         foreach ($xmlObject as $org)
         {
-            $service = new PostService();
             $organization = new Organization();
             $organization->name = $org->attributes()['displayName'];
             $organization->ogrn = $org->attributes()['ogrn'];
             $organization->oktmo = $org->attributes()['oktmo'];
-            $rsp = $service->validateOrg($organization);
+            $validatorOrg = new OrganizationValidation();
+            $rsp = $validatorOrg->validateField($organization);
             $data[] =$organization;
             if(isset($rsp['msg_errors'])){
                 break;
@@ -58,7 +58,8 @@ class XmlFile implements FileInterface
                 $user->inn = $item->attributes()['inn'];
                 $user->snils = $item->attributes()['snils'];
                 array_push($organization->user_list, $user);
-                $rsp = $service->validateUser($user);
+                $validatorUser = new UserValidation();
+                $rsp = $validatorUser->validateField($user);
                 if(isset($rsp['msg_errors'])){
                     break;
                 }

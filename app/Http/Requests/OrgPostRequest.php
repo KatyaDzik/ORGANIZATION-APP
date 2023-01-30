@@ -25,8 +25,8 @@ class OrgPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2', 'max:255', 'string', 'unique:organizations,name'],
-            'ogrn' => ['required', 'string', 'digits:13', new OGRN(), 'unique:organizations,ogrn, organization_id'],
+            'name' => ['required', 'min:2', 'max:255', 'string'],
+            'ogrn' => ['required', 'string', 'digits:13', new OGRN()],
             'oktmo' => ['required', 'string', 'digits:11']
         ];
     }

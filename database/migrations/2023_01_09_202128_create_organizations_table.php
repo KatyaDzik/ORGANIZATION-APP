@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
-            $table->string('ogrn');
+            $table->string('name')->unique();
+            $table->string('ogrn')->unique();
             $table->string('oktmo');
+            $table->string('hash');
             $table->timestamps();
         });
     }
