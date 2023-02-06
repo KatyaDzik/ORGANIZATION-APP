@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\Organization;
-use App\Models\OrganizationUser;
-use App\Models\User;
+use App\Models\OrganizationEmployee;
+use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -15,12 +15,12 @@ class DBQueries
         try{
             DB::beginTransaction();
             self::upsertArrayOrgs($inserted['orgs']);
-            self::upsertArrayUsers($inserted['users']);
+            self::upsertArrayEmployees($inserted['employees']);
 
-            $org_user_references = FormDataService::getReferences($data);
-            self::insertArrayReferences($org_user_references);
+            $org_employee_references = FormDataService::getReferences($data);
+            self::insertArrayReferences($org_employee_references);
+
             DB::commit();
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('import : '. $e->getMessage());
@@ -30,27 +30,27 @@ class DBQueries
     public static function upsertArrayOrgs($inserted)
     {
         try {
-            Organization::upsert($inserted, ['ogrn'], ['name', 'oktmo']);
+            Organization::upsert($inserted, ['id'], ['name','ogrn', 'oktmo']);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Upsert organization : ' . $e->getMessage());
         }
     }
 
-    public static function upsertArrayUsers($inserted)
+    public static function upsertArrayEmployees($inserted)
     {
         try {
-            User::upsert ($inserted, ['inn'], ['first_name', 'middle_name', 'last_name', 'birthday', 'snils']);
+            Employee::upsert ($inserted, ['id'], ['first_name', 'middle_name', 'last_name', 'birthday','inn', 'snils']);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Upsert users : ' . $e->getMessage());
+            Log::error('Upsert employees : ' . $e->getMessage());
         }
     }
 
-    public static function insertArrayReferences($org_user_references)
+    public static function insertArrayReferences($org_employee_references)
     {
         try {
-            OrganizationUser::insert($org_user_references);
+            OrganizationEmployee::insert($org_employee_references);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Insert relationships : ' . $e->getMessage());

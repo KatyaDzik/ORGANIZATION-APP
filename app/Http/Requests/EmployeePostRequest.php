@@ -7,7 +7,7 @@ use App\Rules\OGRN;
 use App\Rules\SNILS;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserPostRequest extends FormRequest
+class EmployeePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

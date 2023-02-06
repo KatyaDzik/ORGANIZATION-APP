@@ -36,7 +36,7 @@ class FileService
         }
 
         $constructData = new FormDataService();
-        $inserted = ['orgs' => $constructData->getOrgs($data), 'users' => $constructData->getUsers($data)];
+        $inserted = ['orgs' => $constructData->getOrgs($data), 'employees' => $constructData->getEmployees($data)];
         DBQueries::insertData($inserted, $data);
 
         return ['success_msg' => 'Данные были успешно загружены'];
@@ -53,3 +53,8 @@ class FileService
         }
     }
 }
+
+//авторизация с ролями. У пользователя из организацци галочка админ организации( у организации одни админ)
+//Когда админ делает запрос к апи с токеном на апи только по своей организации и еще суперадмин, клоторый все организации и сотрудников организациц.
+//По REST API
+

@@ -63,7 +63,7 @@ Organizations
             <h2 style="text-align: center; margin: 30px 0;">Удалить организацию <br/><b>{{$el->name}}</b> ?</h2>
             <div class="modal-footer">
                 <button type="button" id="btnCloseModal" class="btn btn-secondary btn-close-modal">Закрыть</button>
-                <button type="submit" id="btnDeleteOrg" value="{{$el->id}}"  class="btn btn-danger">Удалить</button>
+                <button id="btnDeleteOrg" value="{{$el->id}}"  class="btn btn-danger">Удалить</button>
             </div>
         </x-modal-window>
       @endforeach
@@ -75,8 +75,27 @@ Organizations
     </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-
+<script type="text/javascript">
+    $('#btnDeleteOrg').on('click',function(e){
+        console.log('mmm');
+        let org_id = $('#btnDeleteOrg').val();
+        $.ajax({
+            url: "/org/delete/"+org_id,
+            type:"DELETE",
+            data:{
+                "_token": "{{ csrf_token() }}",
+            },
+            success: function(response){
+                if(response = "success"){
+                    location.href = "{{route('organizations')}}"
+                }
+            },
+            error: function(response) {
+                alert('There was some error performing the AJAX call!');
+            },
+        });
+    });
+</script>
 <script type="text/javascript">
     $('#CreateOrg').on('submit',function(e){
         e.preventDefault();
@@ -120,26 +139,4 @@ Organizations
         });
     });
 </script>
-<script type="text/javascript">
-    $('#btnDeleteOrg').on('click',function(e){
-        e.preventDefault();
-        let org_id = $('#btnDeleteOrg').val();
-        $.ajax({
-            url: "/org/delete/"+org_id,
-            type:"DELETE",
-            data:{
-                "_token": "{{ csrf_token() }}",
-            },
-            success: function(response){
-                if(response = "success"){
-                    location.href = "{{route('organizations')}}"
-                }
-            },
-            error: function(response) {
-                alert('There was some error performing the AJAX call!');
-            },
-        });
-    });
-</script>
-
 @endsection

@@ -38,7 +38,7 @@
 
                 <div class="form-group">
                     <label for="ogrn">ОГРН</label><span class="required-field"> *</span>
-                    <input type="text" class="form-control" value="{{ $data->ogrn }}" id="ogrn" name="ogrn">
+                    <input type="text" class="form-control" value="{{ $data->ogrn }}" id="ogrn" name="ogrn" disabled>
                 </div>
 
                 <div class="form-group">
@@ -54,7 +54,7 @@
         </x-modal-window>
 
         {{-- ВЫВОД ВСЕХ ПОЛЬЗОВАТЕЛЕЙ, КОТОРЫЕ ЕСТЬ В ОРГАНИЗАЦИИ В ВИДЕ ТАБЛИЦЫ --}}
-        @if (!empty($users))
+        @if (!empty($employees))
             <div style="display: flex;   justify-content: space-between; padding-top: 100px;">
                 <h2 style="margin-top: 10px">Пользователи</h2>
                 <button class="btn btn-success btn-open-modal" value="create-user">Добавить</button></div>
@@ -69,21 +69,21 @@
             </tr>
           </thead>
           <tbody>
-      @foreach($users as $el)
+      @foreach($employees as $el)
         <tr>
           <td>{{$el->last_name}} {{$el->first_name}} {{$el->middle_name}}</td>
           <td>{{$el->birthday}}</td>
           <td>{{$el->inn}}</td>
           <td>{{$el->snils}}</td>
-            <td><a href="{{route('user-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
-            <td><a><button value="{{'delete-user-from-org-'.$el->id}}" class="btn btn-danger btn-open-modal">Удалить</button></a></td>
+            <td><a href="{{route('employee-data-by-id',  $el->id)}}"><button class="btn btn-warning">Просмотр</button></a></td>
+            <td><a><button value="{{'delete-employee-from-org-'.$el->id}}" class="btn btn-danger btn-open-modal">Удалить</button></a></td>
         </tr>
 
-        <x-modal-window id="{{'delete-user-from-org-'.$el->id}}">
+        <x-modal-window id="{{'delete-employee-from-org-'.$el->id}}">
             <h2 style="text-align: center; margin: 30px 0;">Удалить пользователя <br/><b>{{$el->last_name}} {{$el->first_name}} {{$el->middle_name}}</b> <br/> из организации <i>{{$data->name}}</i></h2>
             <div class="modal-footer">
                 <button type="button" id="btnCloseModal" class="btn btn-secondary btn-close-modal">Закрыть</button>
-                <button type="submit" id="deleteUserfromOrg" value="{{$el->id}}"  class="btn btn-danger">Удалить</button>
+                <button type="submit" id="deleteEmployeefromOrg" value="{{$el->id}}"  class="btn btn-danger">Удалить</button>
             </div>
         </x-modal-window>
       @endforeach
@@ -93,11 +93,11 @@
       </tbody>
       </table>
         {{-- МОДАЛЬНОЕ ОКНО С ФОРМОЙ ДОБАВЛЕНИЯ НОВОГО ПОЛЬЗОВАТЕЛЯ --}}
-            <x-modal-window id="create-user">
+            <x-modal-window id="create-employee">
 
-                <div style="display: none" id="createUserErrors" class="alert alert-danger"></div>
+                <div style="display: none" id="createEmployeeErrors" class="alert alert-danger"></div>
 
-                <form id="CreateUser" method="post">
+                <form id="CreateEmployee" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="lastname">Фамилия</label><span class="required-field"> *</span>
@@ -131,7 +131,7 @@
 
                     <div class="modal-footer">
                         <button type="button" id="btnCloseModal" class="btn btn-secondary btn-close-modal">Закрыть</button>
-                        <button type="submit" id="btnCreateUser"  class="btn btn-primary">Сохранить</button>
+                        <button type="submit" id="btnCreateEmployee"  class="btn btn-primary">Сохранить</button>
                     </div>
                 </form>
             </x-modal-window>
@@ -203,10 +203,10 @@
 
 
     <script type="text/javascript">
-        $('#deleteUserfromOrg').on('click',function(e){
-             let user_id = $('#deleteUserfromOrg').val();
+        $('#deleteEmployeefromOrg').on('click',function(e){
+             let employee_id = $('#deleteEmployeefromOrg').val();
             $.ajax({
-                url: '/org/'+{{$data->id}}+'/delete/user/'+user_id,
+                url: '/org/'+{{$data->id}}+'/delete/employee/'+employee_id,
                 type:"DELETE",
                 data:{
                     "_token": "{{ csrf_token() }}",
@@ -225,7 +225,7 @@
 
 
     <script type="text/javascript">
-        $('#CreateUser').on('submit',function(e){
+        $('#CreateEmployee').on('submit',function(e){
         e.preventDefault();
         let firstname = $('#firstname').val();
         let lastname = $('#lastname').val();
@@ -235,7 +235,7 @@
         let snils = $('#snils').val();
 
         $.ajax({
-            url: "{{route('create-user', $data->id)}}",
+            url: "{{route('create-employee', $data->id)}}",
             type:"POST",
             data:{
                 "_token": "{{ csrf_token() }}",
@@ -249,7 +249,7 @@
             success: function(response){
                 var obj = JSON.parse(response);
                 if (typeof obj.msg_errors !== 'undefined') {
-                    let errors_div = $('#createUserErrors');
+                    let errors_div = $('#createEmployeeErrors');
                     errors_div.empty();
                     for (key in obj.msg_errors) {
                         obj.msg_errors[key].forEach(function(elem) {

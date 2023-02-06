@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('organizations', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('name')->unique();
-            $table->string('ogrn')->unique();
-            $table->string('oktmo');
-            $table->string('hash');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organizations');
+        Schema::dropIfExists('roles');
     }
 };

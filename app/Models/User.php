@@ -2,21 +2,53 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
-    public function organizations()
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'login',
+        'email',
+        'password',
+        'role_id',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function role()
     {
-        return $this->belongsToMany(Organization::class, 'organization_users', 'user_id', 'org_id' );
+        return $this->belongsToMany(Role::class);
     }
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m:s',
-        'updated_at' => 'datetime:Y-m-d H:m:s'
-    ];
+    public function organizations(){
+        return$this->hasMany(Organization::class);
+    }
 }

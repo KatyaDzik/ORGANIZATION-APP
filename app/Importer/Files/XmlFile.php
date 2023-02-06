@@ -3,8 +3,8 @@
 namespace App\Importer\Files;
 
 use App\Models\Organization;
-use App\Models\User;
-use App\Importer\Validation\UserValidation;
+use App\Models\Employee;
+use App\Importer\Validation\EmployeeValidation;
 use App\Importer\Validation\OrganizationValidation;
 class XmlFile implements FileInterface
 {
@@ -50,16 +50,16 @@ class XmlFile implements FileInterface
                 break;
             }
             foreach ($org as $item) {
-                $user = new User();
-                $user->first_name = $item->attributes()['firstname'];
-                $user->middle_name = $item->attributes()['middlename'];
-                $user->last_name = $item->attributes()['lastname'];
-                $user->birthday = $item->attributes()['birthday'];
-                $user->inn = $item->attributes()['inn'];
-                $user->snils = $item->attributes()['snils'];
-                array_push($organization->user_list, $user);
-                $validatorUser = new UserValidation();
-                $rsp = $validatorUser->validateField($user);
+                $employee = new Employee();
+                $employee->first_name = $item->attributes()['firstname'];
+                $employee->middle_name = $item->attributes()['middlename'];
+                $employee->last_name = $item->attributes()['lastname'];
+                $employee->birthday = $item->attributes()['birthday'];
+                $employee->inn = $item->attributes()['inn'];
+                $employee->snils = $item->attributes()['snils'];
+                array_push($organization->employee_list, $employee);
+                $validatorEmployee = new EmployeeValidation();
+                $rsp = $validatorEmployee->validateField($employee);
                 if(isset($rsp['msg_errors'])){
                     break;
                 }

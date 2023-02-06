@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     use HasFactory;
-    public $user_list=[];
+    protected $guarded=[];
+    public $employee_list=[];
 
-    public function users()
+    public function employees()
     {
-        return $this->belongsToMany(User::class, 'organization_users', 'org_id', 'user_id' );
+        return $this->belongsToMany(Employee::class, 'organization_employees', 'org_id', 'employee_id' );
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected $casts = [

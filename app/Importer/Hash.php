@@ -3,13 +3,13 @@
 namespace App\Importer;
 
 use App\Models\Organization;
-use App\Models\User;
+use App\Models\Employee;
 
 class Hash
 {
-    public static function makeHashUser(User $user)
+    public static function makeHashEmployee(Employee $employee)
     {
-        $str = $user->first_name.$user->middle_name.$user->last_name.$user->birthday.$user->inn.$user->snils;
+        $str = $employee->first_name.$employee->middle_name.$employee->last_name.$employee->birthday.$employee->inn.$employee->snils;
         return md5($str);
     }
 

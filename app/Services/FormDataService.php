@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Importer\Hash;
 use App\Importer\Validation\OrganizationValidation;
-use App\Importer\Validation\UserValidation;
+use App\Importer\Validation\EmployeeValidation;
 use App\Models\Organization;
-use App\Models\OrganizationUser;
-use App\Models\User;
+use App\Models\OrganizationEmployee;
+use App\Models\Employee;
 
 class FormDataService
 {
@@ -24,33 +24,34 @@ class FormDataService
         return $orgs;
     }
 
-    public function getUsers($data){
-        $users = [];
+    public function getEmployees($data){
+        $employees = [];
         foreach ($data as $org) {
-            $getUsers = $this->generator($org->user_list, "findUserForUpsert");
-            if ($getUsers) {
-                foreach ($getUsers as $item) {
+            $getEmployees = $this->generator($org->employee_list, "findEmployeeForUpsert");
+            if ($getEmployees) {
+                foreach ($getEmployees as $item) {
                     if ($item) {
-                        array_push($users, $item);
+                        array_push($employees, $item);
                     }
                 }
             }
         }
-        return $users;
+        return $employees;
     }
 
     public static function getReferences($data)
     {
-        $org_user_references = [];
+        $org_employee_references = [];
         foreach ($data as $org) {
-            foreach ($org->user_list as $user) {
-                $relation  = FormDataService::findExistReference(['ogrn'=>$org->ogrn, 'inn'=>$user->inn]);
+            foreach ($org->employee_list as $employee) {
+                $relation  = FormDataService::findExistReference(['ogrn'=>$org->ogrn, 'inn'=>$employee->inn]);
                 if ($relation){
-                    array_push($org_user_references, $relation);
+                    array_push($org_employee_references, $relation);
                 }
             }
         }
-        return $org_user_references;
+
+        return $org_employee_references;
     }
 
 
@@ -70,35 +71,35 @@ class FormDataService
         }
     }
 
-    public static function findUserForUpsert(User $user)
+    public static function findEmployeeForUpsert(Employee $employee)
     {
-        $validator_user = new UserValidation();
-        $user->hash = Hash::makeHashUser($user);
-        $rsp = $validator_user->isExist($user);
+        $validator_employee = new EmployeeValidation();
+        $employee->hash = Hash::makeHashEmployee($employee);
+        $rsp = $validator_employee->isExist($employee);
         if ($rsp) {
             //Сравниваем кеш
-            if ($rsp['obj']->hash != $user->hash) {
-                return $user->attributesToArray();
+            if ($rsp['obj']->hash != $employee->hash) {
+                return $employee->attributesToArray();
             }
         } else {
-            return $user->attributesToArray();
+            return $employee->attributesToArray();
         }
     }
 
     public static function findExistReference($data)
     {
-        $orgs_user = OrganizationUser::join('users', 'organization_users.user_id', '=', 'users.id')
-            ->join('organizations', 'organization_users.org_id', '=', 'organizations.id')
-            ->where([['users.inn', '=', $data['inn']],['organizations.ogrn', '=', $data['ogrn']]])
+        $orgs_employee = OrganizationEmployee::join('employees', 'organization_employees.employee_id', '=', 'employees.id')
+            ->join('organizations', 'organization_employees.org_id', '=', 'organizations.id')
+            ->where([['employees.inn', '=', $data['inn']],['organizations.ogrn', '=', $data['ogrn']]])
             ->first();
 
-        if(!$orgs_user) {
-            $user_by_inn = User::where('inn', '=', $data['inn'])->first();
+        if(!$orgs_employee) {
+            $employee_by_inn = Employee::where('inn', '=', $data['inn'])->first();
             $org_by_ogrn = Organization::where('ogrn', '=', $data['ogrn'])->first();
-            $org_user = new OrganizationUser();
-            $org_user->user_id = $user_by_inn->id;
-            $org_user->org_id = $org_by_ogrn->id;
-            return $org_user->attributesToArray();
+            $org_employee = new OrganizationEmployee();
+            $org_employee->employee_id = $employee_by_inn->id;
+            $org_employee->org_id = $org_by_ogrn->id;
+            return $org_employee->attributesToArray();
         }
     }
 
