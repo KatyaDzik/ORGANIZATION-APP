@@ -12,6 +12,7 @@ class OGRN implements Rule
      * @return void
      */
     public $err;
+
     public function __construct()
     {
         //
@@ -20,19 +21,24 @@ class OGRN implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
         $ogrn = (string)$value;
+
         if (preg_match('#([\d]{13})#', $ogrn, $m)) {
             $code1 = substr($m[1], 0, 12);
             $code2 = floor($code1 / 11) * 11;
             $code = ($code1 - $code2) % 10;
-            if ($code == $m[1][12]) return true;
+
+            if ($code == $m[1][12]) {
+                return true;
+            }
         }
+
         return false;
     }
 

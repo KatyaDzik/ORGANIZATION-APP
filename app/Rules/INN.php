@@ -19,14 +19,15 @@ class INN implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $inn = (string) $value;
-        if(strlen($inn)==12) {
+        $inn = (string)$value;
+
+        if (strlen($inn) == 12) {
             $num10 = (string)(((
                         7 * $inn[0] + 2 * $inn[1] + 4 * $inn[2] +
                         10 * $inn[3] + 3 * $inn[4] + 5 * $inn[5] +

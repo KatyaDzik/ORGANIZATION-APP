@@ -48,7 +48,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    public function organizations(){
-        return$this->hasMany(Organization::class);
+    public function organizations()
+    {
+        return $this->hasMany(Organization::class);
     }
 }

@@ -17,18 +17,22 @@ class EmployeeService
         $employee->hash = Hash::makeHashEmployee($employee);
         $validator_employee = new EmployeeValidation();
         $rsp = $validator_employee->validateField($employee);
-        if(isset($rsp['msg_errors'])) {
+
+        if (isset($rsp['msg_errors'])) {
             return $rsp;
         }
 
 //        ПРОВЕРКА СУЩЕСТВОВАНИЯ ПОЛЬЗОВАТЕЛЯ С ТАКИМ ИНН
         $rsp = $validator_employee->isExist($employee);
-        if(isset($rsp['msg_errors'])) {
+
+        if (isset($rsp['msg_errors'])) {
             return $rsp;
         }
+
         $org = DBQueries::findOrgById($org_id);
         array_push($org->employee_list, $employee);
-        try{
+
+        try {
             DB::beginTransaction();
             DBQueries::upsertArrayEmployees([$employee->attributesToArray()]);
             $references = FormDataService::getReferences([$org]);
@@ -36,8 +40,9 @@ class EmployeeService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('create employee from form '. $e);
+            Log::error('create employee from form ' . $e);
         }
+
         return ['successful insert'];
     }
 
@@ -46,18 +51,21 @@ class EmployeeService
         $employee->hash = Hash::makeHashEmployee($employee);
         $validator = new EmployeeValidation();
         $checkField = $validator->validateField($employee);
-        if(isset($checkField['msg_errors'])) {
+
+        if (isset($checkField['msg_errors'])) {
             return $checkField;
         }
 
         $checkExist = $validator->isExist($employee);
-        if($checkExist) {
-            if($checkExist['obj']->id != $employee->id) {
+
+        if ($checkExist) {
+            if ($checkExist['obj']->id != $employee->id) {
                 return $checkExist;
             } else {
                 DBQueries::upsertArrayEmployees([$employee->attributesToArray()]);
             }
         }
-        return ['success'];
+
+        return ['successful update'];
     }
 }

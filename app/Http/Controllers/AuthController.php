@@ -21,23 +21,11 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-//        if(!Auth::attempt($request->only('email', 'password'))){
-//            return response([
-//                'errors' => 'Неправильный логин или пароль'
-//            ],Response::HTTP_UNAUTHORIZED);
-//        }
-
-//        $user = Auth::user();
-//        $token = $user->createToken('token')->plainTextToken;
-//
-//        return response([
-//            'jwt'=>$token
-//        ]);
-        $user = User::where('email' , $request->input('email'))->where( 'password' , $request->input('password'))->first();
-        if($user){
-            $success['jwt'] =  $user->createToken('token')->plainTextToken;
+        $user = User::where('email', $request->input('email'))->where('password', $request->input('password'))->first();
+        if ($user) {
+            $success['jwt'] = $user->createToken('token')->plainTextToken;
             return response()->json(['jwt' => $success['jwt']]);
-        }else{
+        } else {
             return response()->json(['errors' => 'Неправильный логин или пароль'], Response::HTTP_UNAUTHORIZED);
         }
     }

@@ -10,11 +10,12 @@
         <div style="display: flex; padding: 20px 20px 20px 0;">
             <h1 style="margin: 0; margin-right: 20px;">{{$employee->last_name}} {{$employee->first_name}} {{$employee->middle_name}} </h1>
             <button class="btn-icon btn-open-modal" value="update-employee"><img width="20px"
-                                                                             src="{{ URL::asset('img/pen.png') }}"
-                                                                             alt=""></button>
-            <button class="btn-icon btn-open-modal" style="margin-left: 20px" value="delete-employee"><a><img width="20px"
-                                                                                                          src="{{ URL::asset('img/trash.png') }}"
-                                                                                                          alt=""></a>
+                                                                                 src="{{ URL::asset('img/pen.png') }}"
+                                                                                 alt=""></button>
+            <button class="btn-icon btn-open-modal" style="margin-left: 20px" value="delete-employee"><a><img
+                        width="20px"
+                        src="{{ URL::asset('img/trash.png') }}"
+                        alt=""></a>
             </button>
         </div>
 

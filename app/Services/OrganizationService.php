@@ -14,14 +14,19 @@ class OrganizationService
         $org->hash = Hash::makeHashOrg($org);
         $validator_org = new OrganizationValidation();
         $rsp = $validator_org->validateField($org);
-        if(isset($rsp['msg_errors'])) {
+
+        if (isset($rsp['msg_errors'])) {
             return $rsp;
         }
+
         $rsp = $validator_org->isExist($org);
-        if(isset($rsp['msg_errors'])) {
+
+        if (isset($rsp['msg_errors'])) {
             return $rsp;
         }
+
         DBQueries::upsertArrayOrgs([$org->attributesToArray()]);
+
         return ['success'];
     }
 
@@ -30,17 +35,21 @@ class OrganizationService
         $org->hash = Hash::makeHashOrg($org);
         $validator_org = new OrganizationValidation();
         $rsp = $validator_org->validateField($org);
-        if(isset($rsp['msg_errors'])) {
+
+        if (isset($rsp['msg_errors'])) {
             return $rsp;
         }
+
         $rsp = $validator_org->isExist($org);
-        if($rsp){
-            if($rsp['obj']->id != $org->id) {
+
+        if ($rsp) {
+            if ($rsp['obj']->id != $org->id) {
                 return $rsp;
             } else {
                 DBQueries::upsertArrayOrgs([$org->attributesToArray()]);
             }
         }
+
         return ['success'];
     }
 }

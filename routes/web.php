@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,33 +17,32 @@ use Illuminate\Support\Facades\Route;
 //Получение всех организаций
 Route::get('/', 'App\Http\Controllers\OrganizationController@getAll')->name('organizations');
 //Удаление связи между пользователем и организацией
-Route::delete('/org/{org_id}/delete/employee/{employee_id}', 'App\Http\Controllers\OrganizationController@deleteEmployeeFromOrg')->name('delete-employee-from-org');
-
-
+Route::delete('/org/{org_id}/delete/employee/{employee_id}',
+    [\App\Http\Controllers\OrganizationController::class, 'deleteEmployeeFromOrg'])->name('delete-employee-from-org');
 
 //CRUD для организации
 Route::get('/org/{id}', 'App\Http\Controllers\OrganizationController@getOrgById')->name('org-data-by-id');
 Route::post('/create', 'App\Http\Controllers\OrganizationController@createOrg')->name('create-org');
 Route::put('/org/edit/{id}', 'App\Http\Controllers\OrganizationController@editOrg')->name('edit-org-data');
-Route::delete('/org/delete/{id}', 'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
+Route::delete('/org/delete/{id}',
+    'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
 
-
-//Route::get('/org/{id}/delete', 'App\Http\Controllers\OrganizationController@deleteOrgById')->name('delete-org-by-id');
 
 //CRUD для сотрудника
 Route::get('/employee/{id}', 'App\Http\Controllers\EmployeeController@getEmployeeById')->name('employee-data-by-id');
 //Создание сотрудника, с привязкой к организации
 Route::post('/org/{id}/create', 'App\Http\Controllers\EmployeeController@CreateEmployee')->name('create-employee');
 Route::put('/employee/edit/{id}', 'App\Http\Controllers\EmployeeController@editEmployee')->name('update-employee');
-Route::delete('/employee/delete/{id}', 'App\Http\Controllers\EmployeeController@deleteEmployee')->name('delete-employee');
+Route::delete('/employee/delete/{id}',
+    'App\Http\Controllers\EmployeeController@deleteEmployee')->name('delete-employee');
 
 
 //открыть страницу с файлом загрузки
 Route::get('/loadxml', function () {
-     return view('load-xml');
- })->name('loadxml');
+    return view('load-xml');
+})->name('loadxml');
 
 //отправить файл загрузки
-Route::post('/loaddata', 'App\Http\Controllers\XMLController@loadData')->name('load-data-from-xml');
+Route::post('/loaddata', [App\Http\Controllers\XMLController::class, 'loadData'])->name('load-data-from-xml');
 
 

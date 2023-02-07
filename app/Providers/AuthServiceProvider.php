@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Providers;
+
 use App\Models\Organization;
 use App\Models\User;
- use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 //use Illuminate\Auth\Access\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -27,20 +28,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('super-user', function (User $user){
-           if($user->role_id === 1){
-               return true;
-           }
+        Gate::define('super-user', function (User $user) {
+            if ($user->role_id === 1) {
+                return true;
+            }
         });
 
-        Gate::define('create-org', function (User $user){
-           if ($user->role_id === 1 || $user->role_id ===2){
-               return true;
-           }
+        Gate::define('create-org', function (User $user) {
+            if ($user->role_id === 1 || $user->role_id === 2) {
+                return true;
+            }
         });
 
-        Gate::define('read-update-delete-org', function (User $user, Organization $organization){
-            if($user->role_id == 1){
+        Gate::define('read-update-delete-org', function (User $user, Organization $organization) {
+            if ($user->role_id == 1) {
                 return true;
             } else {
                 return $user->id === $organization->admin_id;

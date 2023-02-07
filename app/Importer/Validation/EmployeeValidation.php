@@ -37,15 +37,23 @@ class EmployeeValidation
     public function isExist(Employee $employee)
     {
         $exist_employee_inn = Employee::where('inn', $employee->inn)->first();
-        if($exist_employee_inn) {
-            return ['msg_errors'=>['exist'=>['пользователь с таким ИИН уже существует']], 'obj' => $exist_employee_inn];
+
+        if ($exist_employee_inn) {
+            return [
+                'msg_errors' => ['exist' => ['пользователь с таким ИИН уже существует']],
+                'obj' => $exist_employee_inn
+            ];
         }
 
         $exist_employee_snils = Employee::where('snils', $employee->snils)->first();
-        if($exist_employee_snils) {
-            return ['msg_errors'=>['exist'=>['пользователь с таким СНИЛС уже существует']], 'obj' => $exist_employee_snils];
+
+        if ($exist_employee_snils) {
+            return [
+                'msg_errors' => ['exist' => ['пользователь с таким СНИЛС уже существует']],
+                'obj' => $exist_employee_snils
+            ];
         }
 
-        return  false;
+        return false;
     }
 }

@@ -12,7 +12,7 @@ class DBQueries
 {
     public static function insertData($inserted, $data)
     {
-        try{
+        try {
             DB::beginTransaction();
             self::upsertArrayOrgs($inserted['orgs']);
             self::upsertArrayEmployees($inserted['employees']);
@@ -23,14 +23,14 @@ class DBQueries
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('import : '. $e->getMessage());
+            Log::error('import : ' . $e->getMessage());
         }
     }
 
     public static function upsertArrayOrgs($inserted)
     {
         try {
-            Organization::upsert($inserted, ['id'], ['name','ogrn', 'oktmo']);
+            Organization::upsert($inserted, ['id'], ['name', 'ogrn', 'oktmo']);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Upsert organization : ' . $e->getMessage());
@@ -40,7 +40,7 @@ class DBQueries
     public static function upsertArrayEmployees($inserted)
     {
         try {
-            Employee::upsert ($inserted, ['id'], ['first_name', 'middle_name', 'last_name', 'birthday','inn', 'snils']);
+            Employee::upsert($inserted, ['id'], ['first_name', 'middle_name', 'last_name', 'birthday', 'inn', 'snils']);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Upsert employees : ' . $e->getMessage());

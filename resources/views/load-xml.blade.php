@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container">
-{{--  Вывод ошибок  --}}
+        {{--  Вывод ошибок  --}}
         @if(isset($file_error))
             <br>
             <div class="alert alert-danger">
@@ -15,23 +15,23 @@
             </div>
         @endif
 
-    @if(isset($msg_errors))
-        <br>
-        <div class="alert alert-danger">
-            <ul>
-                <h4>Допущены ошибки</h4>
-                @foreach($msg_errors->all() as $mes)
-                    <li> {{$mes}}</li>
-                @endforeach
-            </ul>
-            <ul>
-            <br/><h4>Обратите внимание на объект</h4>
-            @foreach($obj_err as $item)
-                <li> {{$item}}</li>
-            @endforeach
-            </ul>
-        </div>
-    @endif
+        @if(isset($msg_errors))
+            <br>
+            <div class="alert alert-danger">
+                <ul>
+                    <h4>Допущены ошибки</h4>
+                    @foreach($msg_errors->all() as $mes)
+                        <li> {{$mes}}</li>
+                    @endforeach
+                </ul>
+                <ul>
+                    <br/><h4>Обратите внимание на объект</h4>
+                    @foreach($obj_err as $item)
+                        <li> {{$item}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         @if(isset($success_msg))
             <br>
@@ -40,7 +40,7 @@
             </div>
         @endif
 
-{{--  Форма для загрузки файка XML  --}}
+        {{--  Форма для загрузки файка XML  --}}
         <form action="{{route('load-data-from-xml')}}" enctype="multipart/form-data" method="post">
             @csrf
             <div class="form-group" style="margin: 50px">

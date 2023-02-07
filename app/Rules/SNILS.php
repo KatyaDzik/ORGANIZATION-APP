@@ -19,32 +19,39 @@ class SNILS implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
         $result = false;
-        $snils = (string) $value;
+        $snils = (string)$value;
         $sum = 0;
-        if(strlen($snils)==11) {
-        for ($i = 0; $i < 9; $i++) {
-            $sum += (int) $snils[$i]* (9 - $i);
-        }
-        $check_digit = 0;
-        if ($sum < 100) {
-            $check_digit = $sum;
-        } elseif ($sum > 101) {
-            $check_digit = $sum % 101;
-            if ($check_digit === 100) {
-                $check_digit = 0;
+
+        if (strlen($snils) == 11) {
+            for ($i = 0; $i < 9; $i++) {
+                $sum += (int)$snils[$i] * (9 - $i);
+            }
+            $check_digit = 0;
+
+            if ($sum < 100) {
+                $check_digit = $sum;
+            } elseif ($sum > 101) {
+                $check_digit = $sum % 101;
+                if ($check_digit === 100) {
+                    $check_digit = 0;
+                }
+            }
+
+            if ($check_digit === (int)substr($snils, -2)) {
+                $result = true;
             }
         }
-        if ($check_digit === (int) substr($snils, -2)) {
-            $result = true;}}
+
         return $result;
     }
+
     /**
      * Get the validation error message.
      *
